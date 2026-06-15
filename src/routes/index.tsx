@@ -6,6 +6,7 @@ import { AppHeader } from "@/components/AppHeader";
 import { PublicListingCard, PublicDemandCard, type PublicListing, type PublicDemand } from "@/components/PublicCards";
 import { supabase } from "@/integrations/my-supabase/client";
 import { useLangPick, inSeasonNow } from "@/lib/lang";
+import { cropShowcasePhotos, communityFeature } from "@/lib/galleryPhotos";
 import { konjacPhotos, konjacFieldHero } from "@/lib/konjacPhotos";
 
 export const Route = createFileRoute("/")({
@@ -29,8 +30,9 @@ export const Route = createFileRoute("/")({
 });
 
 function Landing() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const pick = useLangPick();
+  const isMy = i18n.language?.startsWith("my");
 
   const crops = useQuery({
     queryKey: ["crops"],
@@ -53,7 +55,6 @@ function Landing() {
         .order("month", { ascending: false })
         .limit(50);
       if (error) throw error;
-      // dedupe latest per crop
       const seen = new Set<string>();
       const out: any[] = [];
       for (const row of (data ?? []) as any[]) {
@@ -103,8 +104,7 @@ function Landing() {
     <div className="min-h-screen bg-background">
       <AppHeader />
 
-      <main className="mx-auto max-w-6xl px-4 py-10 space-y-12">
-        {/* Hero */}
+      <main className="mx-auto max-w-6xl space-y-12 px-4 py-10">
         <section className="relative overflow-hidden rounded-2xl border border-border">
           <img
             src={konjacFieldHero}
@@ -141,7 +141,6 @@ function Landing() {
           </div>
         </section>
 
-        {/* 1. In season now */}
         <Section title={t("home.inSeason")} subtitle={t("home.inSeasonSub")}>
           {crops.isLoading ? (
             <p className="text-sm text-muted-foreground">{t("common.loading")}</p>
@@ -161,7 +160,28 @@ function Landing() {
           )}
         </Section>
 
-        {/* 2. This month's reference prices */}
+        <Section title={t("nav.market")} subtitle={t("market.subtitle")} link={{ to: "/market", label: t("common.viewAll") }}>
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+            {cropShowcasePhotos.map((photo) => (
+              <Link
+                key={photo.url}
+                to="/market"
+                className="group overflow-hidden rounded-xl border border-border bg-card shadow-sm"
+              >
+                <img
+                  src={photo.url}
+                  alt={isMy ? photo.alt_my : photo.alt_en}
+                  loading="lazy"
+                  className="aspect-[4/5] w-full object-cover transition duration-300 group-hover:scale-105"
+                />
+                <div className="border-t border-border px-3 py-2 text-sm font-medium text-card-foreground">
+                  {isMy ? photo.title_my : photo.title_en}
+                </div>
+              </Link>
+            ))}
+          </div>
+        </Section>
+
         <Section
           title={t("home.pricesTitle")}
           subtitle={t("home.pricesSub")}
@@ -202,7 +222,6 @@ function Landing() {
           )}
         </Section>
 
-        {/* 3. Available now */}
         <Section
           title={t("home.available")}
           subtitle={t("home.availableSub")}
@@ -221,7 +240,6 @@ function Landing() {
           )}
         </Section>
 
-        {/* 4. Buyers looking for */}
         <Section
           title={t("home.demand")}
           subtitle={t("home.demandSub")}
@@ -240,7 +258,6 @@ function Landing() {
           )}
         </Section>
 
-        {/* 5. Seasonal calendar */}
         <Section
           title={t("home.calendar")}
           subtitle={t("home.calendarSub")}
@@ -259,9 +276,7 @@ function Landing() {
                     {Array.from({ length: 12 }, (_, i) => i + 1).map((m) => (
                       <th
                         key={m}
-                        className={`px-2 py-2 text-center font-semibold ${
-                          m === nowMonth ? "text-primary" : ""
-                        }`}
+                        className={`px-2 py-2 text-center font-semibold ${m === nowMonth ? "text-primary" : ""}`}
                       >
                         {t(`months.${m}`)}
                       </th>
@@ -294,7 +309,6 @@ function Landing() {
           )}
         </Section>
 
-        {/* Processing plant teaser */}
         <Section
           title={t("processing.landingTitle")}
           subtitle={t("processing.landingSub")}
@@ -309,8 +323,7 @@ function Landing() {
               >
                 <img
                   src={p.url}
-                  alt=""
-                  aria-hidden
+                  alt={p[isMy ? "caption_my" : "caption_en"]}
                   loading="lazy"
                   className="aspect-square w-full object-cover transition group-hover:scale-105"
                 />
@@ -319,7 +332,34 @@ function Landing() {
           </div>
         </Section>
 
-        {/* Role cards + sign-in CTA */}
+        <section className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm md:grid md:grid-cols-[1.2fr_0.8fr]">
+          <img
+            src={communityFeature.url}
+            alt={isMy ? communityFeature.alt_my : communityFeature.alt_en}
+            loading="lazy"
+            className="h-full min-h-64 w-full object-cover"
+          />
+          <div className="flex flex-col justify-center p-6 md:p-8">
+            <p className="text-sm font-medium text-primary">{t("nav.demand")}</p>
+            <h2 className="mt-2 text-2xl font-bold text-card-foreground">{t("landing.for.committee")}</h2>
+            <p className="mt-3 text-sm text-muted-foreground">{t("landing.for.committeeBody")}</p>
+            <div className="mt-5 flex flex-wrap gap-3">
+              <Link
+                to="/demand"
+                className="inline-flex h-10 items-center rounded-md bg-primary px-5 text-sm font-semibold text-primary-foreground hover:opacity-90"
+              >
+                {t("nav.demand")}
+              </Link>
+              <Link
+                to="/auth"
+                className="inline-flex h-10 items-center rounded-md border border-input bg-background px-5 text-sm font-semibold text-foreground hover:bg-accent hover:text-accent-foreground"
+              >
+                {t("landing.ctaSignIn")}
+              </Link>
+            </div>
+          </div>
+        </section>
+
         <section className="grid gap-4 md:grid-cols-3">
           {(["farmers", "buyers", "committee"] as const).map((k) => (
             <article key={k} className="rounded-xl border border-border bg-card p-6 shadow-sm">
@@ -327,16 +367,6 @@ function Landing() {
               <p className="mt-2 text-sm text-muted-foreground">{t(`landing.for.${k}Body`)}</p>
             </article>
           ))}
-        </section>
-
-        <section className="rounded-xl border border-border bg-secondary/40 p-6 text-center">
-          <p className="text-sm text-muted-foreground">{t("landing.ctaBlurb")}</p>
-          <Link
-            to="/auth"
-            className="mt-3 inline-flex h-10 items-center rounded-md bg-primary px-5 text-sm font-semibold text-primary-foreground hover:opacity-90"
-          >
-            {t("landing.ctaSignIn")}
-          </Link>
         </section>
       </main>
     </div>
@@ -371,3 +401,4 @@ function Section({
     </section>
   );
 }
+
