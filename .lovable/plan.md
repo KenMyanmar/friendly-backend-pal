@@ -1,42 +1,58 @@
-## Status check
+# Fix published-site SSR 500
 
-- **`db/0002_public_read.sql` in the workspace is clean** — no `drop PvP` typo. The 4 SELECT policies use `to anon, authenticated using (true)` exactly. Nothing to patch in the repo.
-- **`db/0001_init.sql` is intact in the workspace** (266 lines, ends at the admin-grant comment block). The truncation was only in the chat paste; the source file is fine.
+Two module-scope bugs crash the Cloudflare Worker on import. Dev/Node has shims so it works locally; the Worker doesn't, so every request 500s and h3 swallows the stack.
 
-So the only repo fix the user worried about doesn't exist. Good.
+## 1. `src/i18n.ts` — don't touch `localStorage`/`navigator` during SSR
 
-## What I'll do once switched to build mode
+Replace the file with a guarded init: only attach `LanguageDetector` and `detection` in the browser; pin `lng: "en"` on the server.
 
-### 1. Frontend `.select()` cross-check (no edits unless drift found)
-Read in parallel and diff every column against `0001_init.sql`:
-- `src/routes/index.tsx`, `market.tsx`, `prices.tsx`, `demand.tsx`, `calendar.tsx`
-- `src/components/PublicCards.tsx`
+```ts
+import i18n from "i18next";
+import { initReactI18next } from "react-i18next";
+import LanguageDetector from "i18next-browser-languagedetector";
+import en from "./locales/en.json";
+import my from "./locales/my.json";
 
-If any `.select("col_that_does_not_exist")` shows up, fix it in the frontend (no schema change). Otherwise report clean.
+const isBrowser = typeof window !== "undefined";
 
-### 2. New migration `db/0004_lock_helpers.sql` — anon lockdown on role helpers
-User asked for this. Revokes anon/public EXECUTE on the three role-check helpers, keeps them callable by `authenticated` (so RLS policies that call `has_role` / `is_staff` / `is_committee_or_admin` keep working — RLS runs as the querying role).
+if (!i18n.isInitialized) {
+  const instance = i18n.use(initReactI18next);
+  if (isBrowser) instance.use(LanguageDetector);
 
-```sql
-revoke execute on function public.has_role(uuid, public.app_role)   from public, anon;
-revoke execute on function public.is_staff(uuid)                    from public, anon;
-revoke execute on function public.is_committee_or_admin(uuid)       from public, anon;
+  void instance.init({
+    resources: { en: { translation: en }, my: { translation: my } },
+    fallbackLng: "en",
+    lng: isBrowser ? undefined : "en",
+    supportedLngs: ["en", "my"],
+    interpolation: { escapeValue: false },
+    detection: isBrowser
+      ? { order: ["localStorage", "navigator"], caches: ["localStorage"], lookupLocalStorage: "sz6_lang" }
+      : undefined,
+  });
+}
 
-grant  execute on function public.has_role(uuid, public.app_role)   to authenticated;
-grant  execute on function public.is_staff(uuid)                    to authenticated;
-grant  execute on function public.is_committee_or_admin(uuid)       to authenticated;
+export default i18n;
 ```
 
-User applies it the same way as 0001/0002/0003. RLS policies use these via `SECURITY DEFINER` server-side and against `auth.uid()` which is always an authenticated context, so revoking from `anon`/`public` has no effect on policy evaluation — only blocks the public RPC probe surface the advisor flagged.
+One-frame English flash on hydration for Myanmar visitors is acceptable; cookie-based SSR locale is a later polish.
 
-### 3. What I won't touch
-- No edits to `0001`, `0002`, `0003` (workspace copies match what was applied).
-- No changes to `profiles` / `user_roles` grants.
-- No service-role path, no schema redesign.
+## 2. `src/integrations/my-supabase/client.ts` — don't `createClient("")` at module scope
 
-### Out of scope (next build, on user's signal)
-"Rep CRUD" — staff entry forms for farmers, listings, prices. Separate request.
+`MY_SUPABASE_URL` and `MY_SUPABASE_ANON_KEY` are present as project secrets (confirmed via `fetch_secrets`), and `vite.config.ts` inlines them via `define`. So the published build should have real values. But the file still calls `createClient(url, anonKey)` with empty-string fallbacks — if the define ever misses (preview vs prod, missing build env), `new URL("")` throws at import and the whole Worker dies the same way.
 
----
+Harden it so an unconfigured env degrades gracefully instead of blowing up SSR:
 
-Ready to switch to build mode and execute steps 1 + 2.
+- If `url`/`anonKey` are empty, export a lazy proxy `supabase` that throws **only when actually used**, not at import.
+- Otherwise behave exactly as today.
+
+This keeps SSR boot safe and surfaces a clear error at the first real query if secrets ever go missing.
+
+## 3. Verify the fix
+
+After edits, the build runs automatically. Then hit the published URL and confirm 200 + rendered HTML. If still 500, pull `stack_modern--server-function-logs` (deployment=`published`) — with the i18n landmine removed, the real stack (if any) should now reach logs via the existing `error-capture` + `server.ts` wrapper.
+
+## Out of scope
+
+- Cookie-based SSR locale detection.
+- Touching `server.ts`, `error-capture.ts`, or routes — the wrapper is already correctly wired per the SSR error-handling card.
+- Any DB/RLS changes — backend is verified healthy.
