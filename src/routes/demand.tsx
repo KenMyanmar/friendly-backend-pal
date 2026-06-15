@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import { AppHeader } from "@/components/AppHeader";
 import { PublicDemandCard, type PublicDemand } from "@/components/PublicCards";
 import { supabase } from "@/integrations/my-supabase/client";
+import { communityFeature } from "@/lib/galleryPhotos";
 
 export const Route = createFileRoute("/demand")({
   head: () => ({
@@ -25,7 +26,8 @@ export const Route = createFileRoute("/demand")({
 });
 
 function DemandPage() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const isMy = i18n.language?.startsWith("my");
 
   const q = useQuery({
     queryKey: ["demand"],
@@ -47,6 +49,19 @@ function DemandPage() {
         <h1 className="text-2xl font-bold text-foreground">{t("demand.title")}</h1>
         <p className="mt-1 text-sm text-muted-foreground">{t("demand.subtitle")}</p>
 
+        <section className="mt-6 overflow-hidden rounded-2xl border border-border bg-card shadow-sm md:grid md:grid-cols-[0.95fr_1.05fr]">
+          <img
+            src={communityFeature.url}
+            alt={isMy ? communityFeature.alt_my : communityFeature.alt_en}
+            loading="lazy"
+            className="h-full min-h-64 w-full object-cover"
+          />
+          <div className="flex flex-col justify-center p-6 md:p-8">
+            <h2 className="text-xl font-bold text-card-foreground">{t("nav.demand")}</h2>
+            <p className="mt-3 text-sm text-muted-foreground">{t("landing.for.buyersBody")}</p>
+          </div>
+        </section>
+
         {q.isLoading && <p className="mt-6 text-sm text-muted-foreground">{t("common.loading")}</p>}
         {!q.isLoading && (q.data ?? []).length === 0 && (
           <p className="mt-8 text-sm text-muted-foreground">{t("demand.empty")}</p>
@@ -61,3 +76,4 @@ function DemandPage() {
     </div>
   );
 }
+

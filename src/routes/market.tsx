@@ -7,6 +7,7 @@ import { AppHeader } from "@/components/AppHeader";
 import { PublicListingCard, type PublicListing } from "@/components/PublicCards";
 import { supabase } from "@/integrations/my-supabase/client";
 import { useSession } from "@/lib/auth";
+import { cropShowcasePhotos } from "@/lib/galleryPhotos";
 import { useLangPick, inSeasonNow } from "@/lib/lang";
 
 export const Route = createFileRoute("/market")({
@@ -29,12 +30,13 @@ export const Route = createFileRoute("/market")({
 });
 
 function MarketPage() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const pick = useLangPick();
   const { user } = useSession();
   const [cropFilter, setCropFilter] = useState("");
   const [townshipFilter, setTownshipFilter] = useState("");
   const [seasonOnly, setSeasonOnly] = useState(false);
+  const isMy = i18n.language?.startsWith("my");
 
   const crops = useQuery({
     queryKey: ["crops"],
@@ -48,7 +50,6 @@ function MarketPage() {
     },
   });
 
-  // Anonymous users can't read profiles (RLS denies it), so don't even try to join.
   const listingsSelect = user
     ? `id, quantity, unit, price_per_unit, available_from, location, status, created_at,
        crop:crops ( id, name_en, name_my, unit, harvest_months ),
@@ -95,6 +96,22 @@ function MarketPage() {
       <main className="mx-auto max-w-6xl px-4 py-8">
         <h1 className="text-2xl font-bold text-foreground">{t("market.title")}</h1>
         <p className="mt-1 text-sm text-muted-foreground">{t("market.subtitle")}</p>
+
+        <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+          {cropShowcasePhotos.map((photo) => (
+            <article key={photo.url} className="overflow-hidden rounded-xl border border-border bg-card shadow-sm">
+              <img
+                src={photo.url}
+                alt={isMy ? photo.alt_my : photo.alt_en}
+                loading="lazy"
+                className="aspect-[4/5] w-full object-cover"
+              />
+              <div className="px-3 py-2 text-sm font-medium text-card-foreground">
+                {isMy ? photo.title_my : photo.title_en}
+              </div>
+            </article>
+          ))}
+        </div>
 
         <div className="mt-6 flex flex-wrap items-end gap-3 rounded-lg border border-border bg-card p-4">
           <div className="min-w-40 flex-1">
@@ -143,9 +160,7 @@ function MarketPage() {
           </label>
         </div>
 
-        {listings.isLoading && (
-          <p className="mt-6 text-sm text-muted-foreground">{t("common.loading")}</p>
-        )}
+        {listings.isLoading && <p className="mt-6 text-sm text-muted-foreground">{t("common.loading")}</p>}
         {!listings.isLoading && filtered.length === 0 && (
           <p className="mt-8 text-sm text-muted-foreground">{t("market.empty")}</p>
         )}
@@ -173,3 +188,4 @@ function extractTownship(loc: string | null): string | null {
   const parts = loc.split(",").map((s) => s.trim());
   return parts[parts.length - 1] || null;
 }
+
