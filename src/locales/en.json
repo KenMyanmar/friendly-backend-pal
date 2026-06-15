@@ -8,11 +8,28 @@
     "demand": "Demand board",
     "prices": "Price board",
     "calendar": "Calendar",
+    "processing": "Processing",
     "myListings": "My listings",
     "myDemand": "My demand",
     "admin": "Admin",
     "signIn": "Sign in",
     "signOut": "Sign out"
+  },
+  "processing": {
+    "eyebrow": "Cooperative processing plant",
+    "title": "From field to finished sack — konjac (ဝဥ)",
+    "subtitle": "Our cooperative runs the full konjac supply chain: terraced fields, fresh-tuber intake, washing and grading lines, sun-drying racks, and warehoused dried product ready for offtake.",
+    "heroAlt": "Konjac processing hall with stainless conveyor",
+    "stage": {
+      "field": "Field",
+      "harvest": "Harvest",
+      "processing": "Washing & grading",
+      "drying": "Drying",
+      "warehouse": "Warehouse"
+    },
+    "landingTitle": "Inside the konjac (ဝဥ) processing plant",
+    "landingSub": "A new cooperative-run line that takes fresh tubers all the way to graded, dried, warehoused sacks.",
+    "landingCta": "Tour the plant"
   },
   "lang": { "toggle": "မြန်မာ" },
   "landing": {

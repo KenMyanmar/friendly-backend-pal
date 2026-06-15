@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as ProcessingRouteImport } from './routes/processing'
 import { Route as PricesRouteImport } from './routes/prices'
 import { Route as MarketRouteImport } from './routes/market'
 import { Route as DemandRouteImport } from './routes/demand'
@@ -20,6 +21,11 @@ import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/
 import { Route as AuthenticatedMyListingsRouteImport } from './routes/_authenticated/my.listings'
 import { Route as AuthenticatedMyDemandRouteImport } from './routes/_authenticated/my.demand'
 
+const ProcessingRoute = ProcessingRouteImport.update({
+  id: '/processing',
+  path: '/processing',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PricesRoute = PricesRouteImport.update({
   id: '/prices',
   path: '/prices',
@@ -77,6 +83,7 @@ export interface FileRoutesByFullPath {
   '/demand': typeof DemandRoute
   '/market': typeof MarketRoute
   '/prices': typeof PricesRoute
+  '/processing': typeof ProcessingRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/my/demand': typeof AuthenticatedMyDemandRoute
   '/my/listings': typeof AuthenticatedMyListingsRoute
@@ -88,6 +95,7 @@ export interface FileRoutesByTo {
   '/demand': typeof DemandRoute
   '/market': typeof MarketRoute
   '/prices': typeof PricesRoute
+  '/processing': typeof ProcessingRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/my/demand': typeof AuthenticatedMyDemandRoute
   '/my/listings': typeof AuthenticatedMyListingsRoute
@@ -101,6 +109,7 @@ export interface FileRoutesById {
   '/demand': typeof DemandRoute
   '/market': typeof MarketRoute
   '/prices': typeof PricesRoute
+  '/processing': typeof ProcessingRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/_authenticated/my/demand': typeof AuthenticatedMyDemandRoute
   '/_authenticated/my/listings': typeof AuthenticatedMyListingsRoute
@@ -114,6 +123,7 @@ export interface FileRouteTypes {
     | '/demand'
     | '/market'
     | '/prices'
+    | '/processing'
     | '/admin'
     | '/my/demand'
     | '/my/listings'
@@ -125,6 +135,7 @@ export interface FileRouteTypes {
     | '/demand'
     | '/market'
     | '/prices'
+    | '/processing'
     | '/admin'
     | '/my/demand'
     | '/my/listings'
@@ -137,6 +148,7 @@ export interface FileRouteTypes {
     | '/demand'
     | '/market'
     | '/prices'
+    | '/processing'
     | '/_authenticated/admin'
     | '/_authenticated/my/demand'
     | '/_authenticated/my/listings'
@@ -150,10 +162,18 @@ export interface RootRouteChildren {
   DemandRoute: typeof DemandRoute
   MarketRoute: typeof MarketRoute
   PricesRoute: typeof PricesRoute
+  ProcessingRoute: typeof ProcessingRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/processing': {
+      id: '/processing'
+      path: '/processing'
+      fullPath: '/processing'
+      preLoaderRoute: typeof ProcessingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/prices': {
       id: '/prices'
       path: '/prices'
@@ -250,6 +270,7 @@ const rootRouteChildren: RootRouteChildren = {
   DemandRoute: DemandRoute,
   MarketRoute: MarketRoute,
   PricesRoute: PricesRoute,
+  ProcessingRoute: ProcessingRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
