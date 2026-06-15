@@ -6,6 +6,8 @@ import en from "./locales/en.json";
 import my from "./locales/my.json";
 
 const isBrowser = typeof window !== "undefined";
+const storedLanguage = isBrowser ? window.localStorage.getItem("sz6_lang") : null;
+const initialLanguage = storedLanguage?.startsWith("my") ? "my" : "en";
 
 if (!i18n.isInitialized) {
   const instance = i18n.use(initReactI18next);
@@ -14,7 +16,7 @@ if (!i18n.isInitialized) {
   void instance.init({
     resources: { en: { translation: en }, my: { translation: my } },
     fallbackLng: "en",
-    lng: isBrowser ? undefined : "en",
+    lng: initialLanguage,
     supportedLngs: ["en", "my"],
     interpolation: { escapeValue: false },
     detection: isBrowser

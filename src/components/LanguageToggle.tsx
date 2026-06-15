@@ -6,11 +6,15 @@ export function LanguageToggle() {
   return (
     <button
       type="button"
-      onClick={() => void i18n.changeLanguage(next)}
-      className="inline-flex h-9 items-center rounded-md border border-input bg-background px-3 text-sm font-medium hover:bg-accent hover:text-accent-foreground transition-colors"
+      onClick={() => {
+        window.localStorage.setItem("sz6_lang", next);
+        void i18n.changeLanguage(next);
+      }}
+      className="inline-flex h-9 items-center rounded-md border border-input bg-background px-3 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground"
       aria-label="Toggle language"
     >
       {t("lang.toggle")}
     </button>
   );
 }
+

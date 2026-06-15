@@ -11,13 +11,9 @@ import dryingRacks from "@/assets/konjac/image-9.jpg.asset.json";
 import sortingLine from "@/assets/konjac/image-2.jpg.asset.json";
 import processingHall from "@/assets/konjac/image.jpg.asset.json";
 import warehouse from "@/assets/konjac/image-5.jpg.asset.json";
+import { extraKonjacPhotos, type KonjacGalleryPhoto } from "@/lib/galleryPhotos";
 
-export type KonjacPhoto = {
-  url: string;
-  stage: "field" | "harvest" | "processing" | "drying" | "warehouse";
-  caption_en: string;
-  caption_my: string;
-};
+export type KonjacPhoto = KonjacGalleryPhoto;
 
 export const konjacPhotos: KonjacPhoto[] = [
   {
@@ -26,12 +22,14 @@ export const konjacPhotos: KonjacPhoto[] = [
     caption_en: "Young konjac plants on terraced upland",
     caption_my: "တောင်ပေါ်လယ်ယာတွင် ဝဥပင်ငယ်များ",
   },
+  ...extraKonjacPhotos.slice(0, 2),
   {
     url: tubersStockpile.url,
     stage: "harvest",
     caption_en: "Fresh tubers stacked after lift",
     caption_my: "ထုတ်ပြီးစ ဝဥအဥများ စုပုံထား",
   },
+  extraKonjacPhotos[2],
   {
     url: tipper.url,
     stage: "processing",
@@ -74,6 +72,7 @@ export const konjacPhotos: KonjacPhoto[] = [
     caption_en: "Stacked drying racks",
     caption_my: "ထပ်ထားသော အခြောက်ခံပင်းများ",
   },
+  extraKonjacPhotos[3],
   {
     url: warehouse.url,
     stage: "warehouse",

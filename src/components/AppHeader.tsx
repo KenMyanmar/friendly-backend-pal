@@ -16,10 +16,13 @@ export function AppHeader() {
     <header className="sticky top-0 z-30 border-b border-border bg-background/85 backdrop-blur">
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3">
         <Link to="/" className="flex items-center gap-2 font-semibold text-foreground">
-          <img src={sz6Logo.url} alt="Special Region 6 Department of Agriculture and Livestock Breeding" className="h-9 w-9 rounded-full object-contain" />
+          <img
+            src={sz6Logo.url}
+            alt="Special Region 6 Department of Agriculture and Livestock Breeding"
+            className="h-9 w-9 rounded-full object-contain"
+          />
           <span className="hidden sm:inline">{t("app.name")}</span>
         </Link>
-
 
         <nav className="flex flex-wrap items-center gap-1 text-sm">
           <NavLink to="/market">{t("nav.market")}</NavLink>
@@ -71,3 +74,4 @@ function NavLink({ to, children }: { to: string; children: React.ReactNode }) {
     </Link>
   );
 }
+
