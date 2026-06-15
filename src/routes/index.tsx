@@ -6,6 +6,7 @@ import { AppHeader } from "@/components/AppHeader";
 import { PublicListingCard, PublicDemandCard, type PublicListing, type PublicDemand } from "@/components/PublicCards";
 import { supabase } from "@/integrations/my-supabase/client";
 import { useLangPick, inSeasonNow } from "@/lib/lang";
+import { konjacPhotos, konjacFieldHero } from "@/lib/konjacPhotos";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -104,24 +105,39 @@ function Landing() {
 
       <main className="mx-auto max-w-6xl px-4 py-10 space-y-12">
         {/* Hero */}
-        <section className="rounded-2xl bg-gradient-to-br from-primary/10 via-background to-accent/10 p-8 md:p-12">
-          <h1 className="text-3xl font-bold tracking-tight text-foreground md:text-5xl">
-            {t("app.name")}
-          </h1>
-          <p className="mt-4 max-w-2xl text-base text-muted-foreground md:text-lg">{t("app.tagline")}</p>
-          <div className="mt-6 flex flex-wrap gap-3">
-            <Link
-              to="/market"
-              className="inline-flex h-11 items-center rounded-md bg-primary px-6 text-sm font-semibold text-primary-foreground shadow-sm hover:opacity-90"
-            >
-              {t("nav.market")}
-            </Link>
-            <Link
-              to="/auth"
-              className="inline-flex h-11 items-center rounded-md border border-input bg-background px-6 text-sm font-semibold text-foreground hover:bg-accent hover:text-accent-foreground"
-            >
-              {t("landing.ctaSignIn")}
-            </Link>
+        <section className="relative overflow-hidden rounded-2xl border border-border">
+          <img
+            src={konjacFieldHero}
+            alt=""
+            aria-hidden
+            className="absolute inset-0 h-full w-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-br from-background/95 via-background/80 to-background/40" />
+          <div className="relative z-10 p-8 md:p-12">
+            <h1 className="text-3xl font-bold tracking-tight text-foreground md:text-5xl">
+              {t("app.name")}
+            </h1>
+            <p className="mt-4 max-w-2xl text-base text-muted-foreground md:text-lg">{t("app.tagline")}</p>
+            <div className="mt-6 flex flex-wrap gap-3">
+              <Link
+                to="/market"
+                className="inline-flex h-11 items-center rounded-md bg-primary px-6 text-sm font-semibold text-primary-foreground shadow-sm hover:opacity-90"
+              >
+                {t("nav.market")}
+              </Link>
+              <Link
+                to="/processing"
+                className="inline-flex h-11 items-center rounded-md border border-input bg-background/80 px-6 text-sm font-semibold text-foreground backdrop-blur hover:bg-accent hover:text-accent-foreground"
+              >
+                {t("processing.landingCta")}
+              </Link>
+              <Link
+                to="/auth"
+                className="inline-flex h-11 items-center rounded-md border border-input bg-background/80 px-6 text-sm font-semibold text-foreground backdrop-blur hover:bg-accent hover:text-accent-foreground"
+              >
+                {t("landing.ctaSignIn")}
+              </Link>
+            </div>
           </div>
         </section>
 
@@ -276,6 +292,31 @@ function Landing() {
               </table>
             </div>
           )}
+        </Section>
+
+        {/* Processing plant teaser */}
+        <Section
+          title={t("processing.landingTitle")}
+          subtitle={t("processing.landingSub")}
+          link={{ to: "/processing", label: t("processing.landingCta") }}
+        >
+          <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-5">
+            {konjacPhotos.slice(0, 5).map((p) => (
+              <Link
+                key={p.url}
+                to="/processing"
+                className="group relative overflow-hidden rounded-lg border border-border bg-card"
+              >
+                <img
+                  src={p.url}
+                  alt=""
+                  aria-hidden
+                  loading="lazy"
+                  className="aspect-square w-full object-cover transition group-hover:scale-105"
+                />
+              </Link>
+            ))}
+          </div>
         </Section>
 
         {/* Role cards + sign-in CTA */}
