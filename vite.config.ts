@@ -10,10 +10,4 @@ export default defineConfig({
   tanstackStart: {
     server: { entry: "server" },
   },
-  vite: {
-    define: {
-      "import.meta.env.MY_SUPABASE_URL": JSON.stringify(process.env.MY_SUPABASE_URL ?? ""),
-      "import.meta.env.MY_SUPABASE_ANON_KEY": JSON.stringify(process.env.MY_SUPABASE_ANON_KEY ?? ""),
-    },
-  },
 });

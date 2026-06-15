@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 
 import { AppHeader } from "@/components/AppHeader";
 import { konjacPhotos, konjacHero } from "@/lib/konjacPhotos";
-import i18n from "@/i18n";
+
 
 export const Route = createFileRoute("/processing")({
   head: () => ({
@@ -29,7 +29,7 @@ export const Route = createFileRoute("/processing")({
 const stages = ["field", "harvest", "processing", "drying", "warehouse"] as const;
 
 function ProcessingPage() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const lang = i18n.language?.startsWith("my") ? "my" : "en";
   const captionKey = lang === "my" ? "caption_my" : "caption_en";
 
