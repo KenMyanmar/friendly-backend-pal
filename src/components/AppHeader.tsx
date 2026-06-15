@@ -25,6 +25,7 @@ export function AppHeader() {
           <NavLink to="/prices">{t("nav.prices")}</NavLink>
           <NavLink to="/calendar">{t("nav.calendar")}</NavLink>
           <NavLink to="/processing">{t("nav.processing")}</NavLink>
+          {isStaff && <NavLink to="/my/farmers">{t("nav.myFarmers")}</NavLink>}
           {isStaff && <NavLink to="/my/listings">{t("nav.myListings")}</NavLink>}
           {isStaff && <NavLink to="/my/demand">{t("nav.myDemand")}</NavLink>}
           {isCommitteeOrAdmin && <NavLink to="/admin">{t("nav.admin")}</NavLink>}
