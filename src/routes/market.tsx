@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import { supabase } from "@/integrations/my-supabase/client";
 import { useLangPick, inSeasonNow } from "@/lib/lang";
 
-export const Route = createFileRoute("/_authenticated/market")({
+export const Route = createFileRoute("/market")({
   component: MarketPage,
 });
 

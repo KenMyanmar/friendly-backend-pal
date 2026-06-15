@@ -9,16 +9,21 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as MarketRouteImport } from './routes/market'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedPricesRouteImport } from './routes/_authenticated/prices'
-import { Route as AuthenticatedMarketRouteImport } from './routes/_authenticated/market'
 import { Route as AuthenticatedDemandRouteImport } from './routes/_authenticated/demand'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as AuthenticatedMyListingsRouteImport } from './routes/_authenticated/my.listings'
 import { Route as AuthenticatedMyDemandRouteImport } from './routes/_authenticated/my.demand'
 
+const MarketRoute = MarketRouteImport.update({
+  id: '/market',
+  path: '/market',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
@@ -36,11 +41,6 @@ const IndexRoute = IndexRouteImport.update({
 const AuthenticatedPricesRoute = AuthenticatedPricesRouteImport.update({
   id: '/prices',
   path: '/prices',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
-const AuthenticatedMarketRoute = AuthenticatedMarketRouteImport.update({
-  id: '/market',
-  path: '/market',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedDemandRoute = AuthenticatedDemandRouteImport.update({
@@ -67,9 +67,9 @@ const AuthenticatedMyDemandRoute = AuthenticatedMyDemandRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/market': typeof MarketRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/demand': typeof AuthenticatedDemandRoute
-  '/market': typeof AuthenticatedMarketRoute
   '/prices': typeof AuthenticatedPricesRoute
   '/my/demand': typeof AuthenticatedMyDemandRoute
   '/my/listings': typeof AuthenticatedMyListingsRoute
@@ -77,9 +77,9 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/market': typeof MarketRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/demand': typeof AuthenticatedDemandRoute
-  '/market': typeof AuthenticatedMarketRoute
   '/prices': typeof AuthenticatedPricesRoute
   '/my/demand': typeof AuthenticatedMyDemandRoute
   '/my/listings': typeof AuthenticatedMyListingsRoute
@@ -89,9 +89,9 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
+  '/market': typeof MarketRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/_authenticated/demand': typeof AuthenticatedDemandRoute
-  '/_authenticated/market': typeof AuthenticatedMarketRoute
   '/_authenticated/prices': typeof AuthenticatedPricesRoute
   '/_authenticated/my/demand': typeof AuthenticatedMyDemandRoute
   '/_authenticated/my/listings': typeof AuthenticatedMyListingsRoute
@@ -101,9 +101,9 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/auth'
+    | '/market'
     | '/admin'
     | '/demand'
-    | '/market'
     | '/prices'
     | '/my/demand'
     | '/my/listings'
@@ -111,9 +111,9 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/auth'
+    | '/market'
     | '/admin'
     | '/demand'
-    | '/market'
     | '/prices'
     | '/my/demand'
     | '/my/listings'
@@ -122,9 +122,9 @@ export interface FileRouteTypes {
     | '/'
     | '/_authenticated'
     | '/auth'
+    | '/market'
     | '/_authenticated/admin'
     | '/_authenticated/demand'
-    | '/_authenticated/market'
     | '/_authenticated/prices'
     | '/_authenticated/my/demand'
     | '/_authenticated/my/listings'
@@ -134,10 +134,18 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
+  MarketRoute: typeof MarketRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/market': {
+      id: '/market'
+      path: '/market'
+      fullPath: '/market'
+      preLoaderRoute: typeof MarketRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/auth': {
       id: '/auth'
       path: '/auth'
@@ -164,13 +172,6 @@ declare module '@tanstack/react-router' {
       path: '/prices'
       fullPath: '/prices'
       preLoaderRoute: typeof AuthenticatedPricesRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
-    '/_authenticated/market': {
-      id: '/_authenticated/market'
-      path: '/market'
-      fullPath: '/market'
-      preLoaderRoute: typeof AuthenticatedMarketRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/demand': {
@@ -207,7 +208,6 @@ declare module '@tanstack/react-router' {
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAdminRoute: typeof AuthenticatedAdminRoute
   AuthenticatedDemandRoute: typeof AuthenticatedDemandRoute
-  AuthenticatedMarketRoute: typeof AuthenticatedMarketRoute
   AuthenticatedPricesRoute: typeof AuthenticatedPricesRoute
   AuthenticatedMyDemandRoute: typeof AuthenticatedMyDemandRoute
   AuthenticatedMyListingsRoute: typeof AuthenticatedMyListingsRoute
@@ -216,7 +216,6 @@ interface AuthenticatedRouteRouteChildren {
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAdminRoute: AuthenticatedAdminRoute,
   AuthenticatedDemandRoute: AuthenticatedDemandRoute,
-  AuthenticatedMarketRoute: AuthenticatedMarketRoute,
   AuthenticatedPricesRoute: AuthenticatedPricesRoute,
   AuthenticatedMyDemandRoute: AuthenticatedMyDemandRoute,
   AuthenticatedMyListingsRoute: AuthenticatedMyListingsRoute,
@@ -229,7 +228,18 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
+  MarketRoute: MarketRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
