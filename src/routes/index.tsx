@@ -55,11 +55,12 @@ function Landing() {
       // dedupe latest per crop
       const seen = new Set<string>();
       const out: any[] = [];
-      for (const row of data ?? []) {
-        const cid = row.crop?.id;
+      for (const row of (data ?? []) as any[]) {
+        const crop = Array.isArray(row.crop) ? row.crop[0] : row.crop;
+        const cid = crop?.id;
         if (!cid || seen.has(cid)) continue;
         seen.add(cid);
-        out.push(row);
+        out.push({ ...row, crop });
       }
       return out;
     },

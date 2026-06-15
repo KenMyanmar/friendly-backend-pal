@@ -7,6 +7,7 @@
     "market": "Marketplace",
     "demand": "Demand board",
     "prices": "Price board",
+    "calendar": "Calendar",
     "myListings": "My listings",
     "myDemand": "My demand",
     "admin": "Admin",
@@ -16,6 +17,7 @@
   "lang": { "toggle": "မြန်မာ" },
   "landing": {
     "ctaSignIn": "Staff sign in",
+    "ctaBlurb": "Committee, admin, and village representatives — sign in to post listings, demand, and prices.",
     "for": {
       "farmers": "For farmers",
       "farmersBody": "Grow with confidence — every listing connects to a confirmed buyer.",
@@ -24,6 +26,26 @@
       "committee": "For the committee",
       "committeeBody": "Publish monthly reference prices and oversee fair trade."
     }
+  },
+  "home": {
+    "inSeason": "In season now",
+    "inSeasonSub": "Crops being harvested this month in the zone.",
+    "inSeasonEmpty": "Nothing flagged as in-season this month.",
+    "pricesTitle": "This month's reference prices",
+    "pricesSub": "Latest committee-set price per crop.",
+    "available": "Available now",
+    "availableSub": "Most recent crop listings from cooperatives.",
+    "demand": "Buyers looking for",
+    "demandSub": "Open demand — confirmed orders waiting to be filled.",
+    "calendar": "Seasonal calendar",
+    "calendarSub": "When each crop is harvested across the year."
+  },
+  "calendar": {
+    "title": "Seasonal calendar",
+    "subtitle": "12-month harvest grid for Pa-O crops.",
+    "legendNow": "This month",
+    "legendIn": "In season",
+    "cropsInSeason": "crop(s) currently in season."
   },
   "auth": {
     "title": "Staff sign in",
@@ -67,6 +89,9 @@
     "crops": "Crops",
     "priceBoard": "Price board",
     "onlyAdmin": "Admin or committee access required."
+  },
+  "public": {
+    "signInToContact": "Sign in to contact"
   },
   "common": {
     "loading": "Loading…",

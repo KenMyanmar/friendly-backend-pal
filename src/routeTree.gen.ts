@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as PricesRouteImport } from './routes/prices'
 import { Route as MarketRouteImport } from './routes/market'
 import { Route as DemandRouteImport } from './routes/demand'
+import { Route as CalendarRouteImport } from './routes/calendar'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
@@ -32,6 +33,11 @@ const MarketRoute = MarketRouteImport.update({
 const DemandRoute = DemandRouteImport.update({
   id: '/demand',
   path: '/demand',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CalendarRoute = CalendarRouteImport.update({
+  id: '/calendar',
+  path: '/calendar',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthRoute = AuthRouteImport.update({
@@ -67,6 +73,7 @@ const AuthenticatedMyDemandRoute = AuthenticatedMyDemandRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/calendar': typeof CalendarRoute
   '/demand': typeof DemandRoute
   '/market': typeof MarketRoute
   '/prices': typeof PricesRoute
@@ -77,6 +84,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/calendar': typeof CalendarRoute
   '/demand': typeof DemandRoute
   '/market': typeof MarketRoute
   '/prices': typeof PricesRoute
@@ -89,6 +97,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
+  '/calendar': typeof CalendarRoute
   '/demand': typeof DemandRoute
   '/market': typeof MarketRoute
   '/prices': typeof PricesRoute
@@ -101,6 +110,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/auth'
+    | '/calendar'
     | '/demand'
     | '/market'
     | '/prices'
@@ -111,6 +121,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/auth'
+    | '/calendar'
     | '/demand'
     | '/market'
     | '/prices'
@@ -122,6 +133,7 @@ export interface FileRouteTypes {
     | '/'
     | '/_authenticated'
     | '/auth'
+    | '/calendar'
     | '/demand'
     | '/market'
     | '/prices'
@@ -134,6 +146,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
+  CalendarRoute: typeof CalendarRoute
   DemandRoute: typeof DemandRoute
   MarketRoute: typeof MarketRoute
   PricesRoute: typeof PricesRoute
@@ -160,6 +173,13 @@ declare module '@tanstack/react-router' {
       path: '/demand'
       fullPath: '/demand'
       preLoaderRoute: typeof DemandRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/calendar': {
+      id: '/calendar'
+      path: '/calendar'
+      fullPath: '/calendar'
+      preLoaderRoute: typeof CalendarRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/auth': {
@@ -226,6 +246,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
+  CalendarRoute: CalendarRoute,
   DemandRoute: DemandRoute,
   MarketRoute: MarketRoute,
   PricesRoute: PricesRoute,

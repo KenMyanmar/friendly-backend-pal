@@ -32,10 +32,8 @@ export function PublicListingCard({ listing }: { listing: PublicListing }) {
   const cropName = listing.crop ? (isMy && listing.crop.name_my) || listing.crop.name_en : "—";
   const inSeason = inSeasonNow(listing.crop?.harvest_months ?? null);
 
-  const where =
-    listing.location ??
-    [listing.farmer?.village, listing.farmer?.township].filter(Boolean).join(", ") ||
-    null;
+  const joined = [listing.farmer?.village, listing.farmer?.township].filter(Boolean).join(", ");
+  const where = listing.location ?? (joined || null);
 
   return (
     <article className="rounded-xl border border-border bg-card p-4 shadow-sm">
