@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { LanguageToggle } from "./LanguageToggle";
 import { useMyRoles, useSession } from "@/lib/auth";
 import { supabase } from "@/integrations/my-supabase/client";
+import sz6Logo from "@/assets/sz6-logo.jpg.asset.json";
 
 export function AppHeader() {
   const { t } = useTranslation();
@@ -15,9 +16,10 @@ export function AppHeader() {
     <header className="sticky top-0 z-30 border-b border-border bg-background/85 backdrop-blur">
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3">
         <Link to="/" className="flex items-center gap-2 font-semibold text-foreground">
-          <span className="inline-block h-6 w-6 rounded-md bg-primary" aria-hidden />
+          <img src={sz6Logo.url} alt="Special Region 6 Department of Agriculture and Livestock Breeding" className="h-9 w-9 rounded-full object-contain" />
           <span className="hidden sm:inline">{t("app.name")}</span>
         </Link>
+
 
         <nav className="flex flex-wrap items-center gap-1 text-sm">
           <NavLink to="/market">{t("nav.market")}</NavLink>
