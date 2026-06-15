@@ -9,16 +9,37 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as PricesRouteImport } from './routes/prices'
+import { Route as MarketRouteImport } from './routes/market'
+import { Route as DemandRouteImport } from './routes/demand'
+import { Route as CalendarRouteImport } from './routes/calendar'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as AuthenticatedPricesRouteImport } from './routes/_authenticated/prices'
-import { Route as AuthenticatedMarketRouteImport } from './routes/_authenticated/market'
-import { Route as AuthenticatedDemandRouteImport } from './routes/_authenticated/demand'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as AuthenticatedMyListingsRouteImport } from './routes/_authenticated/my.listings'
 import { Route as AuthenticatedMyDemandRouteImport } from './routes/_authenticated/my.demand'
 
+const PricesRoute = PricesRouteImport.update({
+  id: '/prices',
+  path: '/prices',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MarketRoute = MarketRouteImport.update({
+  id: '/market',
+  path: '/market',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DemandRoute = DemandRouteImport.update({
+  id: '/demand',
+  path: '/demand',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CalendarRoute = CalendarRouteImport.update({
+  id: '/calendar',
+  path: '/calendar',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
@@ -32,21 +53,6 @@ const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
-} as any)
-const AuthenticatedPricesRoute = AuthenticatedPricesRouteImport.update({
-  id: '/prices',
-  path: '/prices',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
-const AuthenticatedMarketRoute = AuthenticatedMarketRouteImport.update({
-  id: '/market',
-  path: '/market',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
-const AuthenticatedDemandRoute = AuthenticatedDemandRouteImport.update({
-  id: '/demand',
-  path: '/demand',
-  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
   id: '/admin',
@@ -67,20 +73,22 @@ const AuthenticatedMyDemandRoute = AuthenticatedMyDemandRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/calendar': typeof CalendarRoute
+  '/demand': typeof DemandRoute
+  '/market': typeof MarketRoute
+  '/prices': typeof PricesRoute
   '/admin': typeof AuthenticatedAdminRoute
-  '/demand': typeof AuthenticatedDemandRoute
-  '/market': typeof AuthenticatedMarketRoute
-  '/prices': typeof AuthenticatedPricesRoute
   '/my/demand': typeof AuthenticatedMyDemandRoute
   '/my/listings': typeof AuthenticatedMyListingsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/calendar': typeof CalendarRoute
+  '/demand': typeof DemandRoute
+  '/market': typeof MarketRoute
+  '/prices': typeof PricesRoute
   '/admin': typeof AuthenticatedAdminRoute
-  '/demand': typeof AuthenticatedDemandRoute
-  '/market': typeof AuthenticatedMarketRoute
-  '/prices': typeof AuthenticatedPricesRoute
   '/my/demand': typeof AuthenticatedMyDemandRoute
   '/my/listings': typeof AuthenticatedMyListingsRoute
 }
@@ -89,10 +97,11 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
+  '/calendar': typeof CalendarRoute
+  '/demand': typeof DemandRoute
+  '/market': typeof MarketRoute
+  '/prices': typeof PricesRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
-  '/_authenticated/demand': typeof AuthenticatedDemandRoute
-  '/_authenticated/market': typeof AuthenticatedMarketRoute
-  '/_authenticated/prices': typeof AuthenticatedPricesRoute
   '/_authenticated/my/demand': typeof AuthenticatedMyDemandRoute
   '/_authenticated/my/listings': typeof AuthenticatedMyListingsRoute
 }
@@ -101,20 +110,22 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/auth'
-    | '/admin'
+    | '/calendar'
     | '/demand'
     | '/market'
     | '/prices'
+    | '/admin'
     | '/my/demand'
     | '/my/listings'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/auth'
-    | '/admin'
+    | '/calendar'
     | '/demand'
     | '/market'
     | '/prices'
+    | '/admin'
     | '/my/demand'
     | '/my/listings'
   id:
@@ -122,10 +133,11 @@ export interface FileRouteTypes {
     | '/'
     | '/_authenticated'
     | '/auth'
+    | '/calendar'
+    | '/demand'
+    | '/market'
+    | '/prices'
     | '/_authenticated/admin'
-    | '/_authenticated/demand'
-    | '/_authenticated/market'
-    | '/_authenticated/prices'
     | '/_authenticated/my/demand'
     | '/_authenticated/my/listings'
   fileRoutesById: FileRoutesById
@@ -134,10 +146,42 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
+  CalendarRoute: typeof CalendarRoute
+  DemandRoute: typeof DemandRoute
+  MarketRoute: typeof MarketRoute
+  PricesRoute: typeof PricesRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/prices': {
+      id: '/prices'
+      path: '/prices'
+      fullPath: '/prices'
+      preLoaderRoute: typeof PricesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/market': {
+      id: '/market'
+      path: '/market'
+      fullPath: '/market'
+      preLoaderRoute: typeof MarketRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/demand': {
+      id: '/demand'
+      path: '/demand'
+      fullPath: '/demand'
+      preLoaderRoute: typeof DemandRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/calendar': {
+      id: '/calendar'
+      path: '/calendar'
+      fullPath: '/calendar'
+      preLoaderRoute: typeof CalendarRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/auth': {
       id: '/auth'
       path: '/auth'
@@ -158,27 +202,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
-    }
-    '/_authenticated/prices': {
-      id: '/_authenticated/prices'
-      path: '/prices'
-      fullPath: '/prices'
-      preLoaderRoute: typeof AuthenticatedPricesRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
-    '/_authenticated/market': {
-      id: '/_authenticated/market'
-      path: '/market'
-      fullPath: '/market'
-      preLoaderRoute: typeof AuthenticatedMarketRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
-    '/_authenticated/demand': {
-      id: '/_authenticated/demand'
-      path: '/demand'
-      fullPath: '/demand'
-      preLoaderRoute: typeof AuthenticatedDemandRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/admin': {
       id: '/_authenticated/admin'
@@ -206,18 +229,12 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAdminRoute: typeof AuthenticatedAdminRoute
-  AuthenticatedDemandRoute: typeof AuthenticatedDemandRoute
-  AuthenticatedMarketRoute: typeof AuthenticatedMarketRoute
-  AuthenticatedPricesRoute: typeof AuthenticatedPricesRoute
   AuthenticatedMyDemandRoute: typeof AuthenticatedMyDemandRoute
   AuthenticatedMyListingsRoute: typeof AuthenticatedMyListingsRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAdminRoute: AuthenticatedAdminRoute,
-  AuthenticatedDemandRoute: AuthenticatedDemandRoute,
-  AuthenticatedMarketRoute: AuthenticatedMarketRoute,
-  AuthenticatedPricesRoute: AuthenticatedPricesRoute,
   AuthenticatedMyDemandRoute: AuthenticatedMyDemandRoute,
   AuthenticatedMyListingsRoute: AuthenticatedMyListingsRoute,
 }
@@ -229,6 +246,10 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
+  CalendarRoute: CalendarRoute,
+  DemandRoute: DemandRoute,
+  MarketRoute: MarketRoute,
+  PricesRoute: PricesRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

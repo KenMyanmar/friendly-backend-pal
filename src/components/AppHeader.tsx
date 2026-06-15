@@ -19,16 +19,15 @@ export function AppHeader() {
           <span className="hidden sm:inline">{t("app.name")}</span>
         </Link>
 
-        {user && (
-          <nav className="flex flex-wrap items-center gap-1 text-sm">
-            <NavLink to="/market">{t("nav.market")}</NavLink>
-            <NavLink to="/demand">{t("nav.demand")}</NavLink>
-            <NavLink to="/prices">{t("nav.prices")}</NavLink>
-            {isStaff && <NavLink to="/my/listings">{t("nav.myListings")}</NavLink>}
-            {isStaff && <NavLink to="/my/demand">{t("nav.myDemand")}</NavLink>}
-            {isCommitteeOrAdmin && <NavLink to="/admin">{t("nav.admin")}</NavLink>}
-          </nav>
-        )}
+        <nav className="flex flex-wrap items-center gap-1 text-sm">
+          <NavLink to="/market">{t("nav.market")}</NavLink>
+          <NavLink to="/demand">{t("nav.demand")}</NavLink>
+          <NavLink to="/prices">{t("nav.prices")}</NavLink>
+          <NavLink to="/calendar">{t("nav.calendar")}</NavLink>
+          {isStaff && <NavLink to="/my/listings">{t("nav.myListings")}</NavLink>}
+          {isStaff && <NavLink to="/my/demand">{t("nav.myDemand")}</NavLink>}
+          {isCommitteeOrAdmin && <NavLink to="/admin">{t("nav.admin")}</NavLink>}
+        </nav>
 
         <div className="flex items-center gap-2">
           <LanguageToggle />
