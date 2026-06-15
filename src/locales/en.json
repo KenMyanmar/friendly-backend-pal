@@ -9,6 +9,7 @@
     "prices": "Price board",
     "calendar": "Calendar",
     "processing": "Processing",
+    "myFarmers": "My members",
     "myListings": "My listings",
     "myDemand": "My demand",
     "admin": "Admin",
@@ -114,9 +115,53 @@
     "loading": "Loading…",
     "save": "Save",
     "cancel": "Cancel",
+    "edit": "Edit",
+    "delete": "Delete",
+    "confirmDelete": "Delete this entry?",
     "inSeason": "In season",
     "harvestMonths": "Harvest months",
     "viewAll": "View all"
+  },
+  "farmers": {
+    "subtitle": "Members (farmers and buyers) you manage on the platform.",
+    "addTitle": "Add a member",
+    "editTitle": "Edit member",
+    "listTitle": "Members you manage",
+    "empty": "No members yet. Add your first farmer or buyer above.",
+    "fullName": "Full name (English)",
+    "fullNameMy": "Full name (မြန်မာ)",
+    "phone": "Phone",
+    "village": "Village",
+    "township": "Township"
+  },
+  "listings": {
+    "subtitle": "Listings you post on behalf of farmers you manage.",
+    "addTitle": "Post a listing",
+    "editTitle": "Edit listing",
+    "listTitle": "Your listings",
+    "empty": "You haven't posted any listings yet.",
+    "noFarmers": "Add a farmer in 'My members' first, then come back to post a listing.",
+    "farmer": "Farmer",
+    "crop": "Crop",
+    "unit": "Unit",
+    "location": "Location"
+  },
+  "demandMy": {
+    "subtitle": "Demand posts on behalf of buyers you manage.",
+    "addTitle": "Post demand",
+    "editTitle": "Edit demand",
+    "listTitle": "Your demand posts",
+    "empty": "You haven't posted any demand yet.",
+    "noBuyers": "Add a buyer in 'My members' first, then come back to post demand.",
+    "buyer": "Buyer"
+  },
+  "priceBoard": {
+    "addTitle": "Publish a price",
+    "editTitle": "Edit price",
+    "month": "Month",
+    "refPrice": "Reference price",
+    "currency": "Currency",
+    "notes": "Notes"
   },
   "status": {
     "available": "Available",
