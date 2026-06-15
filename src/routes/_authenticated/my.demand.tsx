@@ -40,13 +40,22 @@ const schema = z.object({
   status: z.enum(["open", "matched", "fulfilled"]),
 });
 
-const empty = {
+type FormState = {
+  buyer_profile_id: string;
+  crop_id: string;
+  quantity: string;
+  target_price: string;
+  needed_by: string;
+  status: "open" | "matched" | "fulfilled";
+};
+
+const empty: FormState = {
   buyer_profile_id: "",
   crop_id: "",
   quantity: "",
   target_price: "",
   needed_by: "",
-  status: "open" as const,
+  status: "open",
 };
 
 function MyDemandPage() {

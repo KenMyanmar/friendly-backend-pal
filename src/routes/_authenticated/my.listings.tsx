@@ -42,7 +42,18 @@ const schema = z.object({
   status: z.enum(["available", "reserved", "sold"]),
 });
 
-const empty = {
+type FormState = {
+  farmer_profile_id: string;
+  crop_id: string;
+  quantity: string;
+  unit: string;
+  price_per_unit: string;
+  available_from: string;
+  location: string;
+  status: "available" | "reserved" | "sold";
+};
+
+const empty: FormState = {
   farmer_profile_id: "",
   crop_id: "",
   quantity: "",
@@ -50,7 +61,7 @@ const empty = {
   price_per_unit: "",
   available_from: "",
   location: "",
-  status: "available" as const,
+  status: "available",
 };
 
 function MyListingsPage() {

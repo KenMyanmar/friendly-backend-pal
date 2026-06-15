@@ -19,6 +19,7 @@ import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as AuthenticatedMyListingsRouteImport } from './routes/_authenticated/my.listings'
+import { Route as AuthenticatedMyFarmersRouteImport } from './routes/_authenticated/my.farmers'
 import { Route as AuthenticatedMyDemandRouteImport } from './routes/_authenticated/my.demand'
 
 const ProcessingRoute = ProcessingRouteImport.update({
@@ -70,6 +71,11 @@ const AuthenticatedMyListingsRoute = AuthenticatedMyListingsRouteImport.update({
   path: '/my/listings',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedMyFarmersRoute = AuthenticatedMyFarmersRouteImport.update({
+  id: '/my/farmers',
+  path: '/my/farmers',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedMyDemandRoute = AuthenticatedMyDemandRouteImport.update({
   id: '/my/demand',
   path: '/my/demand',
@@ -86,6 +92,7 @@ export interface FileRoutesByFullPath {
   '/processing': typeof ProcessingRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/my/demand': typeof AuthenticatedMyDemandRoute
+  '/my/farmers': typeof AuthenticatedMyFarmersRoute
   '/my/listings': typeof AuthenticatedMyListingsRoute
 }
 export interface FileRoutesByTo {
@@ -98,6 +105,7 @@ export interface FileRoutesByTo {
   '/processing': typeof ProcessingRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/my/demand': typeof AuthenticatedMyDemandRoute
+  '/my/farmers': typeof AuthenticatedMyFarmersRoute
   '/my/listings': typeof AuthenticatedMyListingsRoute
 }
 export interface FileRoutesById {
@@ -112,6 +120,7 @@ export interface FileRoutesById {
   '/processing': typeof ProcessingRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/_authenticated/my/demand': typeof AuthenticatedMyDemandRoute
+  '/_authenticated/my/farmers': typeof AuthenticatedMyFarmersRoute
   '/_authenticated/my/listings': typeof AuthenticatedMyListingsRoute
 }
 export interface FileRouteTypes {
@@ -126,6 +135,7 @@ export interface FileRouteTypes {
     | '/processing'
     | '/admin'
     | '/my/demand'
+    | '/my/farmers'
     | '/my/listings'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -138,6 +148,7 @@ export interface FileRouteTypes {
     | '/processing'
     | '/admin'
     | '/my/demand'
+    | '/my/farmers'
     | '/my/listings'
   id:
     | '__root__'
@@ -151,6 +162,7 @@ export interface FileRouteTypes {
     | '/processing'
     | '/_authenticated/admin'
     | '/_authenticated/my/demand'
+    | '/_authenticated/my/farmers'
     | '/_authenticated/my/listings'
   fileRoutesById: FileRoutesById
 }
@@ -237,6 +249,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedMyListingsRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/my/farmers': {
+      id: '/_authenticated/my/farmers'
+      path: '/my/farmers'
+      fullPath: '/my/farmers'
+      preLoaderRoute: typeof AuthenticatedMyFarmersRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/my/demand': {
       id: '/_authenticated/my/demand'
       path: '/my/demand'
@@ -250,12 +269,14 @@ declare module '@tanstack/react-router' {
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAdminRoute: typeof AuthenticatedAdminRoute
   AuthenticatedMyDemandRoute: typeof AuthenticatedMyDemandRoute
+  AuthenticatedMyFarmersRoute: typeof AuthenticatedMyFarmersRoute
   AuthenticatedMyListingsRoute: typeof AuthenticatedMyListingsRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAdminRoute: AuthenticatedAdminRoute,
   AuthenticatedMyDemandRoute: AuthenticatedMyDemandRoute,
+  AuthenticatedMyFarmersRoute: AuthenticatedMyFarmersRoute,
   AuthenticatedMyListingsRoute: AuthenticatedMyListingsRoute,
 }
 
