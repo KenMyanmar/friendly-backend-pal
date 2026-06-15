@@ -1,8 +1,18 @@
+import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
 export function LanguageToggle() {
   const { i18n, t } = useTranslation();
   const next = i18n.language?.startsWith("my") ? "en" : "my";
+
+  useEffect(() => {
+    const storedLanguage = window.localStorage.getItem("sz6_lang");
+    const preferredLanguage = storedLanguage?.startsWith("my") ? "my" : "en";
+    if (i18n.language !== preferredLanguage) {
+      void i18n.changeLanguage(preferredLanguage);
+    }
+  }, [i18n]);
+
   return (
     <button
       type="button"
@@ -17,4 +27,5 @@ export function LanguageToggle() {
     </button>
   );
 }
+
 
