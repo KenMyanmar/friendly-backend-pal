@@ -1,0 +1,91 @@
+{
+  "app": {
+    "name": "Special Zone 6 Economic Initiative",
+    "tagline": "Connecting Pa-O farmers directly with buyers — grow only what is already sold."
+  },
+  "nav": {
+    "market": "Marketplace",
+    "demand": "Demand board",
+    "prices": "Price board",
+    "myListings": "My listings",
+    "myDemand": "My demand",
+    "admin": "Admin",
+    "signIn": "Sign in",
+    "signOut": "Sign out"
+  },
+  "lang": { "toggle": "မြန်မာ" },
+  "landing": {
+    "ctaSignIn": "Staff sign in",
+    "for": {
+      "farmers": "For farmers",
+      "farmersBody": "Grow with confidence — every listing connects to a confirmed buyer.",
+      "buyers": "For buyers",
+      "buyersBody": "Pre-order seasonal crops directly from cooperatives — no brokers.",
+      "committee": "For the committee",
+      "committeeBody": "Publish monthly reference prices and oversee fair trade."
+    }
+  },
+  "auth": {
+    "title": "Staff sign in",
+    "subtitle": "Committee, admin, and village representatives only. Farmers and buyers are onboarded by village reps.",
+    "email": "Email",
+    "password": "Password",
+    "signIn": "Sign in",
+    "signingIn": "Signing in…",
+    "error": "Sign-in failed. Check your email and password."
+  },
+  "market": {
+    "title": "Crop marketplace",
+    "subtitle": "Browse available crops from cooperatives.",
+    "filterCrop": "Crop",
+    "filterTownship": "Township",
+    "inSeasonOnly": "In season now",
+    "all": "All",
+    "empty": "No listings match your filters.",
+    "qty": "Quantity",
+    "price": "Price",
+    "from": "Available from",
+    "status": "Status"
+  },
+  "demand": {
+    "title": "Demand board",
+    "subtitle": "Confirmed buyer demand — grow with certainty.",
+    "empty": "No open demand right now.",
+    "neededBy": "Needed by",
+    "targetPrice": "Target price"
+  },
+  "prices": {
+    "title": "Committee price board",
+    "subtitle": "Monthly reference prices set by the cooperative committee.",
+    "month": "Month",
+    "ref": "Reference price",
+    "empty": "No prices published yet."
+  },
+  "admin": {
+    "title": "Admin dashboard",
+    "members": "Members",
+    "crops": "Crops",
+    "priceBoard": "Price board",
+    "onlyAdmin": "Admin or committee access required."
+  },
+  "common": {
+    "loading": "Loading…",
+    "save": "Save",
+    "cancel": "Cancel",
+    "inSeason": "In season",
+    "harvestMonths": "Harvest months",
+    "viewAll": "View all"
+  },
+  "status": {
+    "available": "Available",
+    "reserved": "Reserved",
+    "sold": "Sold",
+    "open": "Open",
+    "matched": "Matched",
+    "fulfilled": "Fulfilled"
+  },
+  "months": {
+    "1": "Jan", "2": "Feb", "3": "Mar", "4": "Apr", "5": "May", "6": "Jun",
+    "7": "Jul", "8": "Aug", "9": "Sep", "10": "Oct", "11": "Nov", "12": "Dec"
+  }
+}
