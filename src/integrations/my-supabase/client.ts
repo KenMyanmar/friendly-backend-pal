@@ -1,7 +1,7 @@
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 
-const url = (import.meta.env.MY_SUPABASE_URL as string) || "";
-const anonKey = (import.meta.env.MY_SUPABASE_ANON_KEY as string) || "";
+const url = (import.meta.env.VITE_MY_SUPABASE_URL as string) || "";
+const anonKey = (import.meta.env.VITE_MY_SUPABASE_ANON_KEY as string) || "";
 
 function createLazyMissingClient(): SupabaseClient {
   const message =

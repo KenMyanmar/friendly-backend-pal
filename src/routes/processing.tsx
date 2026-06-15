@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 
 import { AppHeader } from "@/components/AppHeader";
 import { konjacPhotos, konjacHero } from "@/lib/konjacPhotos";
-import i18n from "@/i18n";
+
 
 export const Route = createFileRoute("/processing")({
   head: () => ({
