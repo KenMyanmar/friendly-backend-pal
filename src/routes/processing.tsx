@@ -29,7 +29,7 @@ export const Route = createFileRoute("/processing")({
 const stages = ["field", "harvest", "processing", "drying", "warehouse"] as const;
 
 function ProcessingPage() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const lang = i18n.language?.startsWith("my") ? "my" : "en";
   const captionKey = lang === "my" ? "caption_my" : "caption_en";
 
